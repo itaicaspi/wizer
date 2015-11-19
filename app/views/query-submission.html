@@ -1,0 +1,22 @@
+<!-- Query Submission -->
+<div ng-if="query.show" class="animation">
+  <div class="well">
+    <button type="button" class="close" aria-label="Close" ng-click="query.hide()"><span aria-hidden="true">&times;</span></button>
+    <form action="">
+      <div class="form-group">
+        <label for="qeury-title">Title</label>
+        <input type="text" id="query-title" class="form-control" placeholder="Question" ng-model="query.question">
+      </div>
+      <div class="form-group">
+        <label for="query-description">Description</label>
+        <textarea rows="3" id="query-description" class="form-control" maxlength="1000" placeholder="Description" ng-model="query.description" autofocus ng-keydown="query.validateKey($event, query.question, query.description)"></textarea>
+      </div>
+      <div class="row">
+        <div class="col-md-10"></div>
+        <div class="col-md-2">
+          <input type="submit" class="btn btn-success" value="Submit" ng-click="query.addQuery(query.question, query.description)">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

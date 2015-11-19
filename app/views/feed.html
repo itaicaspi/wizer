@@ -1,0 +1,29 @@
+<div class="row">
+  <span class="col-md-4" style="color:#134E69">
+    Related to 
+    <strong class="dotted" ng-controller="TopicsPopoverCtrl as popover" type="button" title="{{popover.title}}" data-content="{{popover.content}}" data-template-url="views/topics-popover.html" data-animation="am-flip-x" data-auto-close="1" data-placement="bottom" bs-popover>{{feed.topics}}</strong>
+  </span>
+  <span class="col-md-4">
+  </span>
+  <span class="col-md-4" style="text-align:right">
+    <span class="glyphicon glyphicon-menu-down"></span>
+    Sorted by 
+    <strong class="dotted" ng-controller="SortPopoverCtrl as popover" type="button" title="{{popover.title}}" data-content="{{popover.content}}" data-template-url="views/sort-popover.html" data-animation="am-flip-x" data-auto-close="1" data-placement="bottom" bs-popover>{{feed.sort}}</strong>
+  </span>
+</div>
+<br>
+<ul class="list-group" id="accordion" >
+  <li class="list-group-item panel" ng-repeat="query in feed.queries | filter:search.phrase">
+    <img ng-src="{{query.ownerPic}}" alt="Profile picture" class="img-circle" width="30" height="30" style="margin-right: 5px">
+    <span class="badge alert-success">{{query.category}}</span>
+    <a data-toggle="collapse" data-parent="#accordion" ng-href="#collapse{{$index}}">
+      <b>{{query.question}}</b>
+    </a>
+    <div id="collapse{{$index}}" class="panel-collapse collapse">
+      <div class="panel-body">
+        <p>{{query.description}}</p>
+        <p class="text-right"><a class="btn btn-primary" href="#" role="button" style="right:0px"><span class="glyphicon glyphicon-check"></span> Connect Now</a></p>
+      </div>
+    </div>
+  </li>
+</ul>

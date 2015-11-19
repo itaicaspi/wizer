@@ -1,0 +1,33 @@
+<div>
+  <a class="navbar-brand logo" href="#/" style="margin-bottom: 20px">
+    <img src="images/logo-small.png" alt="logo">
+  </a>
+</div>
+
+<ul class="list-group">
+  <li class="list-group-item no-background panel" ng-show="menu.loggedIn" style="text-align: center">
+    <img src="images\me.jpg" alt="" class="img-rounded" width="100px" max-width="200px">
+    <br>
+    <big>Itai Caspi</big>
+  </li>
+  <li class="list-group-item no-background panel" style="text-align: center">
+    <a href="" class="" data-animation="am-fade" data-template-url="views/sign-up.html" bs-modal="modal" data-container="body" ng-controller="SignUpModalCtrl as signup"><b>Sign Up</b></a>
+  </li>
+  <li class="list-group-item no-background panel" ng-hide="menu.loggedIn" style="text-align: center">
+    <a href="" ng-click="menu.loggedIn = true"><b>Log In</b></a>
+  </li>
+  <li class="list-group-item no-background panel" ng-repeat="item in menu.menuItems" ng-class="{'menu-active': menu.isCurrent($index)}">
+    <!-- <a ng-href="{{item.url}}"> -->
+      <img ng-src="{{item.icon}}" alt="{{item.title}}" width="50px" ng-mouseover="menu.toggleActive($index)" ng-mouseleave="menu.toggleActive($index)" ng-click="menu.setCurrent($index)" style="margin-left: 25px">
+    <!-- </a> -->
+    <span class="badge" ng-show="{{item.badge > 0}}">{{item.badge}}</span>
+    <div ng-if="menu.active===$index" class="fade-animation" style="text-align:center">
+      <b>{{item.title}}</b>
+    </div>
+  </li>
+</ul>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();
+});
+</script>
