@@ -21,7 +21,8 @@ var queries = ['$http', '$rootScope', function QueriesFactory ($http, $rootScope
           ownerPic: 'images/profile3.jpg',
           category: 'Biology',
           question: question,
-          description: description
+          description: description,
+          date: new Date()
         }
       });
       $rootScope.$broadcast('updateFeed');

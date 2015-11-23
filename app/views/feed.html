@@ -13,7 +13,7 @@
 </div>
 <br>
 <ul class="list-group" id="accordion" >
-  <li class="list-group-item panel" ng-repeat="query in feed.queries | filter:search.phrase">
+  <li class="list-group-item panel" ng-repeat="query in feed.queries | filter:search.phrase | orderBy:feed.sortKey()">
     <img ng-src="{{query.ownerPic}}" alt="Profile picture" class="img-circle" width="30" height="30" style="margin-right: 5px">
     <span class="badge alert-success">{{query.category}}</span>
     <a data-toggle="collapse" data-parent="#accordion" ng-href="#collapse{{$index}}">
@@ -22,7 +22,19 @@
     <div id="collapse{{$index}}" class="panel-collapse collapse">
       <div class="panel-body">
         <p>{{query.description}}</p>
+        {{query.date | date:'medium'}}
         <p class="text-right"><a class="btn btn-primary" href="#" role="button" style="right:0px"><span class="glyphicon glyphicon-check"></span> Connect Now</a></p>
+        <div class="well" ng-if="query.comments.length > 0"><strong>Comments:</strong>
+          <ul class="list-group">
+            <li class="list-group-item" ng-repeat="comment in query.comments">
+              <img ng-src="{{comment.ownerPic}}" alt="Profile picture" class="img-circle" width="20" height="20" style="margin-right: 5px">
+              {{comment.text}}
+            </li>
+          </ul>
+        </div>
+        <button type="button" class="btn btn-default" aria-label="Left Align">
+          Comment
+        </button>
       </div>
     </div>
   </li>

@@ -26,38 +26,29 @@
               <!-- Name -->
               <div class="input-group" ng-class="{'has-success': SignUpForm.username.$dirty}">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-                <input name="username" type="text" class="form-control" ng-model="name" placeholder="What's your name?">
+                <input name="username" type="text" class="form-control" ng-model="signup.username" placeholder="What's your name?">
                 <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-if="SignUpForm.username.$dirty" aria-hidden="true"></span>
               </div>
               <!-- Email -->
-              <div class="input-group" ng-class="{'has-error': SignUpForm.email.$invalid, 'has-success': SignUpForm.email.$dirty}">
+              <div class="input-group has-feedback" ng-class="{'has-error': !signup.emailValid && SignUpForm.email.$dirty, 'has-success': signup.emailValid && SignUpForm.email.$dirty}">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
-                <input name="email" type="email" id="email" class="form-control" placeholder="Email" ng-model="email">
-                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-if="SignUpForm.email.$dirty" aria-hidden="true"></span>
+                <input name="email" type="email" class="form-control" placeholder="Email" ng-model="signup.email" ng-change="signup.emailValidator()" novalidate>
+                 <span class="glyphicon glyphicon-remove form-control-feedback" ng-if="!signup.emailValid && signup.emailDirty" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-if="signup.emailValid && signup.emailDirty" aria-hidden="true"></span>
               </div>
-              <div class="" ng-messages="SignUpForm.email.$error">
-                <span class="help-block" ng-message="email">Email address is not valid</span>
+              <div class="" ng-show="signup.emailDirty">
+                <span class="help-block">{{signup.emailError}}</span>
               </div>
               <!-- Password -->
-              <div class="input-group has-feedback" ng-class="{'has-error': SignUpForm.password.$invalid, 'has-success': SignUpForm.password.$valid && SignUpForm.password.$dirty}">
+              <div class="input-group has-feedback" ng-class="{'has-error': !signup.passwordValid && signup.passwordDirty, 'has-success': signup.passwordValid && signup.passwordDirty}">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></div>
-                <input name="password" type="password" class="form-control" ng-model="password" password placeholder="Enter password">
-                <span class="glyphicon glyphicon-remove form-control-feedback" ng-if="SignUpForm.password.$invalid" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-if="SignUpForm.password.$valid && SignUpForm.password.$dirty" aria-hidden="true"></span>
+                <input name="password" type="password" class="form-control" ng-model="signup.password" ng-change="signup.passwordValidator()" placeholder="Enter password">
+                <span class="glyphicon glyphicon-remove form-control-feedback" ng-if="!signup.passwordValid && signup.passwordDirty" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-if="signup.passwordValid && signup.passwordDirty" aria-hidden="true"></span>
               </div>
-              <div class="" ng-messages="SignUpForm.password.$error">
-                <span class="help-block" ng-message="numberValidator">Password should contain numbers</span>
-                <span class="help-block" ng-message="uppercaseValidator">Password should contain uppercase letters</span>
-                <span class="help-block" ng-message="lowercaseValidator">Password should contain lowercase letters</span>
-                <span class="help-block" ng-message="sixCharactersValidator">Password should contain at least 6 characters</span>
+              <div class="" ng-show="signup.passwordDirty">
+                <span class="help-block">{{signup.passwordError}}</span>
               </div>
-              <!-- Confirm -->
-              <!-- <div class="input-group has-feedback" ng-class="{'has-error': confirm != password && SignUpForm.confirm.$dirty, 'has-success': confirm == password && SignUpForm.confirm.$dirty}">
-                <div class="input-group-addon"><span class="glyphicon glyphicon-repeat"></span></div>
-                <input name="confirm" type="password" class="form-control" ng-model="confirm" placeholder="Confirm password">
-                <span class="glyphicon glyphicon-remove form-control-feedback" ng-if="confirm != password && SignUpForm.confirm.$dirty" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-if="confirm == password && SignUpForm.confirm.$dirty" aria-hidden="true"></span>
-              </div> -->
               <div class="hline">
                 <span>OR</span>
               </div>
@@ -76,53 +67,78 @@
       </div>
       <div class="modal-body" ng-if="signup.step == 2">
         <form action="" name="SignUpForm">
-          <div class="form-group" style="text-align: left">
-            <label class="control-label">Education</label>
-            <select class="form-control">
-              <option>High school student</option>
-              <option>High school graduate</option>
-              <option>College student</option>
-              <option>Associate degree</option>
-              <option>Bachelor's degree</option>
-              <option>Master's degree</option>
-              <option>Professional degree</option>
-              <option>Doctorate</option>
-            </select>
-            <label class="control-label">Interest topics</label>
-            <input type="text" class="form-control" placeholder="" ng-model="interests">
-            <label class="control-label">Profession</label>
-            <input type="text" class="form-control" placeholder="" ng-model="profession">
-            <label class="control-label">Spoken languages</label>
-            <input type="text" class="form-control" placeholder="" ng-model="languages">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group" style="text-align: left">
+                <div class="form-group">
+                  <label><i class="glyphicon glyphicon-education"></i> Education</label>
+                  <select class="form-control">
+                    <option ng-repeat="education in educations">{{education}}</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                   <label><i class="fa fa-smile-o"></i> Interest topics</label>
+                  <input type="text" class="form-control" ng-model="interests" placeholder="Enter interests">
+                </div>
+                <div class="form-group">
+                  <label><i class="glyphicon glyphicon-briefcase"></i> Occupation</label>
+                  <input type="text" class="form-control" ng-model="profession" placeholder="What do you do for a living?" bs-options="occupation for occupation in occupations" bs-typeahead data-min-length="0">
+                </div>
+                <div class="form-group">
+                  <label><i class="fa fa-globe"></i> Spoken languages</label>
+                  <input type="text" class="form-control" ng-model="selectedLanguages" bs-options="language.name for language in languages" placeholder="Type your languages" bs-typeahead data-min-length="0">
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <img src="images/education.jpg" alt="" width="250" height="250">
+            </div>
           </div>
+         
         </form>
       </div>
       <div class="modal-body" ng-if="signup.step == 3">
         <form action="" name="SignUpForm">
-          <div class="form-group" style="text-align: left">
-            <label>
-              <input type="checkbox"> I have a bank account
-            </label>
-            <textarea class="form-control" rows="3">
-              Terms of use
-              ------------
-              1. bla bla bla bla bla bla bla
-              2. bla bla bla bla bla bla bla
-              3. bla bla bla bla bla bla bla
+          <div class="form-group" style="text-align: left">           
+            <textarea class="form-control" rows="10">
+              1. Terms
+
+              By accessing this web site, you are agreeing to be bound by these web site Terms and Conditions of Use, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws. If you do not agree with any of these terms, you are prohibited from using or accessing this site. The materials contained in this web site are protected by applicable copyright and trade mark law.
+
+              2. Use License
+
+              Permission is granted to temporarily download one copy of the materials (information or software) on wizer's web site for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
+              modify or copy the materials;
+              use the materials for any commercial purpose, or for any public display (commercial or non-commercial);
+              attempt to decompile or reverse engineer any software contained on wizer's web site;
+              remove any copyright or other proprietary notations from the materials; or
+              transfer the materials to another person or "mirror" the materials on any other server.
+              This license shall automatically terminate if you violate any of these restrictions and may be terminated by wizer at any time. Upon terminating your viewing of these materials or upon the termination of this license, you must destroy any downloaded materials in your possession whether in electronic or printed format.
+
+              3. Disclaimer
+
+              The materials on wizer's web site are provided "as is". wizer makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties, including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights. Further, wizer does not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on its Internet web site or otherwise relating to such materials or on any sites linked to this site.
             </textarea>
-            <label>
-              <input type="checkbox"> I agree to the terms of use
-            </label>
+            <div>
+              <br>
+              <label>
+                <input type="checkbox"> I agree to the terms of use
+              </label>
+              <br>
+              <label>
+                <input type="checkbox"> I have a bank account
+              </label>
+            </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <div class="col-md-3" style="text-align: left; padding:0px">
-          <button type="button" class="btn btn-danger" ng-if="signup.step>1" ng-click="signup.step = signup.step - 1">Go Back</button>
+          <button type="button" class="btn btn-danger" ng-if="signup.step>1" ng-click="signup.prev()">Go Back</button>
         </div>
         <div class="col-md-6"></div>
         <div class="col-md-3" style="text-align: right; padding:0px">
-          <button type="button" class="btn btn-success" ng-click="signup.next()">{{signup.step < 3 ? "Next Step" : "Finish"}}</button>
+          <button type="button" class="btn btn-success" ng-click="signup.next()" ng-disabled="SignUpForm.$valid">{{signup.step < 3 ? "Next Step" : "Finish"}}</button>
         </div>
       </div>
     </div>

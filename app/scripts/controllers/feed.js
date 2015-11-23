@@ -18,7 +18,15 @@ var FeedCtrl = function(search, queries, $http, $scope){
       });
     });
     self.updateFeed();
-
+    self.sortKey = function() {
+      if (self.sort == 'Most Recent') {
+        return 'date';
+      } else if (self.sort == 'Interesting') {
+        return 'comments.length';
+      } else {
+        return 'query_id';
+      }
+    };
   };
 
 angular.module('mainApp').controller('FeedCtrl', FeedCtrl);
