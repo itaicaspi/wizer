@@ -1,0 +1,18 @@
+[
+	{
+		"username": "itaicaspi@gmail.com",
+		"name": "Itai Caspi",
+		"password": "12345",
+		"profession": "Engineer",
+		"image": "images\\me.jpg",
+		"experience": 70
+	},
+	{
+		"username": "amitefrony@gmail.com",
+		"name": "Amit Efrony",
+		"password": "12345",
+		"profession": "Scientist",
+		"image": "images\\me.jpg",
+		"experience": 90
+	}
+]

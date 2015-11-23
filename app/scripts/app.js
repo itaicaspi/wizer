@@ -92,6 +92,14 @@ angular
       controllerAs: 'signup'
     };
   })
+  .directive('rightBar', function () {
+    return {
+      restrict: 'E',
+      templateUrl: 'views/right-bar.html',
+      controller: 'RightBarCtrl',
+      controllerAs: 'right'
+    };
+  })
   .controller('SortPopoverCtrl', function($scope) {
     $scope.popover = {title: 'Sort by'};
   })

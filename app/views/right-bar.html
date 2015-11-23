@@ -1,0 +1,29 @@
+<div class="row right-content">
+  <ul class="list-group">
+    <li class="list-group-item">
+      <b>
+      Meet great mentors
+      </b>
+      <br>
+    </li>
+    <li class="list-group-item">
+      <div class="row" ng-repeat="mentor in right.mentors">
+        <div class="col-md-3">
+          <img ng-src="{{mentor.image}}" alt="" class="img-circle" width="50" height="50">
+        </div>
+        <div class="col-md-9">
+          <b>{{ mentor.name }}</b>
+          <br>{{ mentor.profession }}
+          <div class="progress">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{mentor.experience}}" aria-valuemin="0" aria-valuemax="100" style="width: 90%">
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li style="color:transparent" role="separator" class="divider"></li>
+    <li class="list-group-item">
+      <small>© 2015 Hand by Hand <br>About · Help · Terms · Privacy · More</small>
+    </li>
+  </ul>
+</div>
