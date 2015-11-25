@@ -1,8 +1,8 @@
 <div class="modal" id="signUpForm" tabindex="-1" role="dialog" aria-labelledby="signUpLabel" style="overflow: hidden">
   <div class="modal-dialog" role="document" >
-    <div class="modal-content" style="text-align:center" ng-init="signup.step = 1">
+    <div class="modal-content" style="text-align:center">
       <div class="modal-body">
-        <button type="button" class="close" ng-click="signup.hide()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" ng-click="hideModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h3><b>JOIN HAND BY HAND</b></h3>
         <h4>Become a member in just a few steps</h4>
       </div>
@@ -78,7 +78,7 @@
                 </div>
                 <div class="form-group">
                    <label><i class="fa fa-smile-o"></i> Interest topics</label>
-                  <input type="text" class="form-control" ng-model="interests" placeholder="Enter interests">
+                  <input type="text" class="form-control" ng-model="interests" placeholder="What are your top interests?">
                 </div>
                 <div class="form-group">
                   <label><i class="glyphicon glyphicon-briefcase"></i> Occupation</label>
@@ -86,7 +86,7 @@
                 </div>
                 <div class="form-group">
                   <label><i class="fa fa-globe"></i> Spoken languages</label>
-                  <input type="text" class="form-control" ng-model="selectedLanguages" bs-options="language.name for language in languages" placeholder="Type your languages" bs-typeahead data-min-length="0">
+                  <input type="text" class="form-control" ng-model="selectedLanguages" bs-options="language.name for language in languages" placeholder="What languages are you fluent in?" bs-typeahead data-min-length="0">
                 </div>
               </div>
             </div>
@@ -133,10 +133,10 @@
         </form>
       </div>
       <div class="modal-footer">
-        <div class="col-md-3" style="text-align: left; padding:0px">
+        <div class="col-md-9" style="text-align: left; padding:0px">
           <button type="button" class="btn btn-danger" ng-if="signup.step>1" ng-click="signup.prev()">Go Back</button>
+          <div class="alert alert-danger" role="alert" ng-if="signup.alert" style="padding: 7px 20px 7px 20px; margin-bottom: 0px">Please finish filling out the necessary fields</div>
         </div>
-        <div class="col-md-6"></div>
         <div class="col-md-3" style="text-align: right; padding:0px">
           <button type="button" class="btn btn-success" ng-click="signup.next()" ng-disabled="SignUpForm.$valid">{{signup.step < 3 ? "Next Step" : "Finish"}}</button>
         </div>

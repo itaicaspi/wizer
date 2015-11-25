@@ -22,19 +22,33 @@
     <div id="collapse{{$index}}" class="panel-collapse collapse">
       <div class="panel-body">
         <p>{{query.description}}</p>
-        {{query.date | date:'medium'}}
-        <p class="text-right"><a class="btn btn-primary" href="#" role="button" style="right:0px"><span class="glyphicon glyphicon-check"></span> Connect Now</a></p>
-        <div class="well" ng-if="query.comments.length > 0"><strong>Comments:</strong>
-          <ul class="list-group">
-            <li class="list-group-item" ng-repeat="comment in query.comments">
-              <img ng-src="{{comment.ownerPic}}" alt="Profile picture" class="img-circle" width="20" height="20" style="margin-right: 5px">
-              {{comment.text}}
-            </li>
-          </ul>
+        <p class="text-right">{{query.date | date:'medium'}}</p>
+        <br>
+        <!-- Begin Comments -->
+        <div ng-repeat="comment in query.comments">
+          <img ng-src="{{comment.ownerPic}}" alt="Profile picture" class="img-circle" width="25" height="25" style="top: 5px; position: relative;">
+          <p class="comment">
+            {{comment.text}}
+            <br>
+
+            <span>{{comment.date | date:'medium'}}</span>
+          </p>
         </div>
-        <button type="button" class="btn btn-default" aria-label="Left Align">
-          Comment
-        </button>
+        <div>
+          <img ng-src="../images/me.jpg" alt="Profile picture" class="img-circle" width="25" height="25" style="top: 5px; position: relative;">
+          <p class="comment" style="padding: 5px">
+            <input type="text" class="form-control" placeholder="Add a comment..." size="100">
+          </p>
+        </div>
+        <!-- End Comments -->
+        <div class="row">
+          <div class="col-sm-6">
+          </div>
+          <div class="col-sm-6">
+            <p class="text-right"><a class="btn btn-primary" href="#" role="button" style="right:0px"><span class="glyphicon glyphicon-check"></span> Connect Now</a></p>
+          </div>
+        </div>
+
       </div>
     </div>
   </li>

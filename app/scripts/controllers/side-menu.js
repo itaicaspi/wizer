@@ -1,7 +1,16 @@
 'use strict';
 
-var SideMenuCtrl = function () {
+var SideMenuCtrl = function ($scope, $modal) {
   var self = this;
+
+  var signupModal = $modal({controller: 'SignUpModalCtrl as signup', templateUrl: 'views/sign-up.html', show: false});
+  $scope.showModal = function() {
+    signupModal.$promise.then(signupModal.show);
+  };
+  $scope.hideModal = function() {
+    signupModal.$promise.then(signupModal.hide);
+  };
+
 
   self.loggedIn = false;
 

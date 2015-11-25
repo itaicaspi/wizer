@@ -1,60 +1,59 @@
 'use strict';
 
-var SignUpModalCtrl = function($scope, $http){
+var model = {
+	educations: ["High school student",
+				      "High school graduate",
+				      "College student",
+				      "Associate degree",
+				      "Bachelor's degree",
+				      "Master's degree",
+				      "Professional degree",
+				      "Doctorate"]
+};
+
+angular.module('mainApp').run(function($http) {
+  $http.get('json/languages.json').success(function(response) {
+  	model.languages = angular.fromJson(response);
+	});
+  $http.get('json/occupations.json').success(function(response) {
+  	model.occupations = angular.fromJson(response);
+	});
+  $http.get('json/emails.json').success(function(response) { // TODO: because of security issues, this check should be moved to the server
+  	model.emails = angular.fromJson(response);
+	});
+});
+
+var SignUpModalCtrl = function($scope, $http, $modal){
 	var self = this;
 	self.step = 1;
 	self.profilePicHelper = "Choose your profile picture";
-	self.bindHide = function(hide) {
-      self.hide = hide;
-    };
-    self.next = function(){
-    	if (self.step == 1 && self.passwordValid) {
-    		self.step = self.step + 1;
-    	} else if (self.step > 1) {
-    		self.step = self.step + 1;
-    	}
-    };
-    self.prev = function() {
-    	self.step = self.step - 1;
-    };
-    $scope.educations = [
-        "High school student",
-        "High school graduate",
-        "College student",
-        "Associate degree",
-        "Bachelor's degree",
-        "Master's degree",
-        "Professional degree",
-        "Doctorate"
-    ];
 
-    $scope.loadLanguages = function() {
-        var url = 'json/languages.json';
-        $http.get(url).success(function(response) {
-        	$scope.languages = angular.fromJson(response);
-    	}).error(function() {
-            console.log('languages json file not found');
-        });
-    };
-    $scope.loadOccupations = function() {
-        var url = 'json/occupations.json';
-        $http.get(url).success(function(response) {
-        	$scope.occupations = angular.fromJson(response);
-    	}).error(function() {
-            console.log('occupations json file not found');
-        });
-    };
+  self.next = function(){
+  	self.alert = false;
+  	if (self.step == 1 && self.passwordValid) {
+  		self.step = self.step + 1;
+  	} else if (self.step > 1) {
+  		self.step = self.step + 1;
+  	} else {
+  		self.alert = true;
+  	}
+  };
+  self.prev = function() {
+  	self.step = self.step - 1;
+  };
 
-    $scope.loadOccupations();
-    $scope.loadLanguages();
+  $scope.educations = model.educations;
+  $scope.languages = model.languages;
+  $scope.occupations = model.occupations;
+  $scope.emails = model.emails;
 
-    self.emailValid = false;
-    self.emailDirty = false;
-    self.passwordValid = false;
-    self.passwordDirty = false;
+  self.emailValid = false;
+  self.emailDirty = false;
+  self.passwordValid = false;
+  self.passwordDirty = false;
 
 	self.passwordValidator = function() {
-
+		self.passwordValid = false;
 		if (!/[A-Z]/.test(self.password)) {
 			self.passwordError = "Password should contain uppercase letters";
 		} else if (!/[a-z]/.test(self.password)) {
@@ -68,28 +67,21 @@ var SignUpModalCtrl = function($scope, $http){
 			self.passwordValid = true;
 		}
 
-        self.passwordDirty = true;
-    };
+    self.passwordDirty = true;
+  };
 
 	self.emailValidator = function() {
-		console.log("hello");
-		var emailRegex = /^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
-		if (!emailRegex.test(self.email)) {
+		self.emailValid = false;
+		if (!/\S+@\S+\.\S+/.test(self.email)) {
 			self.emailError = "The email does not seem to be valid";
+		} else if ($scope.emails.indexOf(self.email) > -1) {
+			self.emailError = "This email address is already in use";
 		} else {
-
 			self.emailError = "";
 			self.emailValid = true;
 		}
-
-        self.emailDirty = true;
-    };
-
-};
-
-var SignUpLink = function(){
-
+	  self.emailDirty = true;
+  };
 };
 
 angular.module('mainApp').controller('SignUpModalCtrl', SignUpModalCtrl);
-angular.module('mainApp').controller('SignUpLink', SignUpLink);

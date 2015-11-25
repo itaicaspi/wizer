@@ -278,7 +278,24 @@ body {
 }
 
 
+.comment {
+  font-size: 13px;
+  background-color: #FFFFFF;
+  border: 1px solid #DADADA;
+  border-radius: 4px 4px 4px 4px;
+  padding: 8px 25px 8px 15px;
+  margin-left: 42px;
+  margin-bottom: -10px;
+  top: -25px;
+  position: relative;
+}
 
-
-
-
+.comment::before {
+  background: url("../images/comment_carrot.png");
+  content: "";
+  height: 33px;
+  left: -10px;
+  position: absolute;
+  top: 2px;
+  width: 10px;
+}
