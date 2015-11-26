@@ -1,6 +1,6 @@
 'use strict';
 
-var FeedCtrl = function(search, queries, $http, $scope){
+var FeedCtrl = function(search, queries, comments, $http, $scope){
     var self = this;
 
     self.sort = 'Interesting';
@@ -11,6 +11,11 @@ var FeedCtrl = function(search, queries, $http, $scope){
     self.updateFeed = function() {
       queries.getQueries().then(function(data) {
         self.queries = data.data;
+        angular.forEach(self.queries, function(query) {
+          comments.getComments(query._id).then(function(data) {
+            query.comments = data.data;
+          });
+        });
       });
     };
     $scope.$on('updateFeed', function() {
@@ -26,6 +31,21 @@ var FeedCtrl = function(search, queries, $http, $scope){
         return 'comments.length';
       } else {
         return 'query_id';
+      }
+    };
+    self.validateKey = function(event, queryId, comment) {
+      if (event.which === 13) { // enter
+        comments.addComment(queryId, comment);
+        angular.forEach(self.queries, function(query) {
+          if (query._id == queryId) {
+            query.comments.push({
+              text: comment,
+              date: new Date(),
+              ownerPic: 'images/me.jpg'
+            });
+          }
+        });
+        self.comment = '';
       }
     };
   };

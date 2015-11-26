@@ -30,60 +30,49 @@ app.get('/Options', function(req,res) {
 	res.sendFile(__dirname + '/index.html');
 });
 
-// Receive connections
-app.post('/ask',function(req,res){
-	req.on('data', function(chunk) {
-		mongodb.MongoClient.connect(dbUri, function(error, db) {
-			if (error) {
-				console.log(error);
-			}
 
+mongodb.MongoClient.connect(dbUri, function(error, db) {
+	if (error) {
+		console.log(error);
+	}
+	// Queries
+	app.post('/ask',function(req,res){
+		req.on('data', function(chunk) {
 			var query = JSON.parse(chunk);
 			db.collection('queries').insert(query);
 		});
-		/*fs.readFile('json/queries.json', function (err, data) {
-		  	if (err) throw err;
-		  	var jsonFile = JSON.parse(data);
-		  	jsonFile.unshift(JSON.parse(chunk));
-		  	fs.writeFile('json/queries.json', JSON.stringify(jsonFile));
-		});*/
+	  	res.end();
 	});
-  	res.end();
-});
-
-app.post('/signup',function(req,res){
-	req.on('data', function(chunk) {
-		mongodb.MongoClient.connect(dbUri, function(error, db) {
-			if (error) {
-				console.log(error);
-			}
-
-			var user = JSON.parse(chunk);
-			db.collection('users').insert(user);
-		});
-	});
-  	res.end();
-});
-
-app.get('/feed', function(req,res) {
-	mongodb.MongoClient.connect(dbUri, function(error, db) {
-		if (error) {
-			console.log(error);
-		}
-
+	app.get('/feed', function(req,res) {
 		db.collection('queries').find().toArray(function(err, docs) {
 			res.json(docs);
 		});
 	});
-});
 
-app.get('/users', function(req,res) {
+	// Comments
+	app.post('/comment',function(req,res){
+		req.on('data', function(chunk) {
+			var comment = JSON.parse(chunk);
+			db.collection('comments_' + comment.queryId).insert(comment);
+		});
+	  	res.end();
+	});
 
-	mongodb.MongoClient.connect(dbUri, function(error, db) {
-		if (error) {
-			console.log(error);
-		}
-		
+	app.get('/getComments', function(req,res) {	
+		db.collection('comments_' + req.query.queryId).find(req.query).toArray(function(err, docs) {
+			res.json(docs);
+		});
+	});
+
+	// Users
+	app.post('/signup',function(req,res){
+		req.on('data', function(chunk) {
+			var user = JSON.parse(chunk);
+			db.collection('users').insert(user);
+		});
+	  	res.end();
+	});
+	app.get('/users', function(req,res) {
 		db.collection('users').find(req.query).toArray(function(err, docs) {
 			var userInfo = {};
 			if (docs.length > 0) {
@@ -93,16 +82,7 @@ app.get('/users', function(req,res) {
 			res.json(userInfo);
 		});
 	});
-
-});
-
-app.get('/signin', function(req,res) {
-
-	mongodb.MongoClient.connect(dbUri, function(error, db) {
-		if (error) {
-			console.log(error);
-		}
-		
+	app.get('/signin', function(req,res) {	
 		db.collection('users').find(req.query).toArray(function(err, docs) {
 			var allowed = docs.length > 0;
 			res.json({allowed: allowed});
@@ -110,6 +90,7 @@ app.get('/signin', function(req,res) {
 	});
 
 });
+
 
 // Turn server on
 server.listen(serverPort, function() {
