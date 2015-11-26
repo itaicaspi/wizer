@@ -5,10 +5,11 @@ var AskCtrl = function (search, queries) {
 
 	self.searchPhrase = '';
 	self.postQuery = function(phrase) {
+		self.phrase = '';
 		queries.showQuerySubmission(phrase);
 	};
 	self.validateEnter = function(event, phrase) {
-		if (event.which === 13) {
+		if (event.which === 13) { // enter
 			self.postQuery(phrase);
 		}
 	};

@@ -3,7 +3,7 @@
 var FeedCtrl = function(search, queries, comments, $http, $scope){
     var self = this;
 
-    self.sort = 'Interesting';
+    self.sort = 'Most Recent';
     self.topics = 'Science & Bussiness';
     self.isCommenting = false;
 
@@ -18,11 +18,8 @@ var FeedCtrl = function(search, queries, comments, $http, $scope){
         });
       });
     };
-    $scope.$on('updateFeed', function() {
-      queries.getQueries().then(function(data) {
-        self.queries = data.data;
-      });
-    });
+    $scope.$on('updateFeed', self.updateFeed);
+
     self.updateFeed();
     self.sortKey = function() {
       if (self.sort == 'Most Recent') {

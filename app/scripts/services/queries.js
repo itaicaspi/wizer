@@ -1,6 +1,6 @@
 'use strict';
 
-var queries = ['$http', '$rootScope', function QueriesFactory ($http, $rootScope) {
+var queries = ['$http', '$rootScope', function ($http, $rootScope) {
   return {
     showQuerySubmission: function(phrase) {
       $rootScope.$emit('showQuerySubmission', phrase);
@@ -24,8 +24,9 @@ var queries = ['$http', '$rootScope', function QueriesFactory ($http, $rootScope
           description: description,
           date: new Date()
         }
+      }).success(function() {
+        $rootScope.$broadcast('updateFeed');
       });
-      $rootScope.$broadcast('updateFeed');
     }
   };
 }];
