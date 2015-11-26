@@ -18,12 +18,9 @@ angular.module('mainApp').run(function($http) {
   $http.get('json/occupations.json').success(function(response) {
   	model.occupations = angular.fromJson(response);
 	});
-  $http.get('json/emails.json').success(function(response) { // TODO: because of security issues, this check should be moved to the server
-  	model.emails = angular.fromJson(response);
-	});
 });
 
-var SignUpModalCtrl = function($scope, $http, $modal){
+var SignUpModalCtrl = function($scope, $http, $modal, users){
 	var self = this;
 	self.step = 1;
 	self.profilePicHelper = "Choose your profile picture";
@@ -31,9 +28,22 @@ var SignUpModalCtrl = function($scope, $http, $modal){
   self.next = function(){
   	self.alert = false;
   	if (self.step == 1 && self.passwordValid) {
+  		var userInfo = users.getUserInfo(self.user.email);
+  		userInfo.then(function(data) {
+        if (data.data.name == "") {
+        	self.step = self.step + 1;
+        } else {
+        	self.emailValid = false;
+        	self.emailError = "The email seems to already be in use";
+        }
+      });
+      //users.checkUserCredentials(self.user.email, self.user.password);
+  	} else if (self.step > 1 && self.step < 3) {
   		self.step = self.step + 1;
-  	} else if (self.step > 1) {
-  		self.step = self.step + 1;
+  	} else if (self.step == 3) {
+  		self.user.pic = "images/profile3.jpg";
+  		self.user.email = angular.lowercase(self.user.email);
+  		users.addUser(self.user);
   	} else {
   		self.alert = true;
   	}
@@ -45,7 +55,6 @@ var SignUpModalCtrl = function($scope, $http, $modal){
   $scope.educations = model.educations;
   $scope.languages = model.languages;
   $scope.occupations = model.occupations;
-  $scope.emails = model.emails;
 
   self.emailValid = false;
   self.emailDirty = false;
@@ -54,13 +63,13 @@ var SignUpModalCtrl = function($scope, $http, $modal){
 
 	self.passwordValidator = function() {
 		self.passwordValid = false;
-		if (!/[A-Z]/.test(self.password)) {
+		if (!/[A-Z]/.test(self.user.password)) {
 			self.passwordError = "Password should contain uppercase letters";
-		} else if (!/[a-z]/.test(self.password)) {
+		} else if (!/[a-z]/.test(self.user.password)) {
 			self.passwordError = "Password should contain lowercase letters";
-		} else if (!/[0-9]/.test(self.password)) {
+		} else if (!/[0-9]/.test(self.user.password)) {
 			self.passwordError = "Password should contain numbers";
-		} else if (self.password.length < 6) {
+		} else if (self.user.password.length < 6) {
 			self.passwordError = "Password should contain at least 6 characters";
 		} else {
 			self.passwordError = "";
@@ -72,16 +81,20 @@ var SignUpModalCtrl = function($scope, $http, $modal){
 
 	self.emailValidator = function() {
 		self.emailValid = false;
-		if (!/\S+@\S+\.\S+/.test(self.email)) {
+		if (!/\S+@\S+\.\S+/.test(self.user.email)) {
 			self.emailError = "The email does not seem to be valid";
-		} else if ($scope.emails.indexOf(self.email) > -1) {
-			self.emailError = "This email address is already in use";
 		} else {
 			self.emailError = "";
 			self.emailValid = true;
 		}
 	  self.emailDirty = true;
   };
+
+  self.validateKey = function(event) {
+		if (event.which === 13) { // enter
+			self.next();
+		}
+	};
 };
 
 angular.module('mainApp').controller('SignUpModalCtrl', SignUpModalCtrl);

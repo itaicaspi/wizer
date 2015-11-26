@@ -8,7 +8,7 @@ var queries = ['$http', '$rootScope', function QueriesFactory ($http, $rootScope
     getQueries: function() {
       return $http({
         method: 'GET',
-        url: 'json/queries.json'
+        url: 'feed'
       }).success(function(data) {
         return data;
       });

@@ -26,14 +26,14 @@
               <!-- Name -->
               <div class="input-group" ng-class="{'has-success': SignUpForm.username.$dirty}">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-                <input name="username" type="text" class="form-control" ng-model="signup.username" placeholder="What's your name?">
+                <input name="username" type="text" class="form-control" ng-model="signup.user.name" placeholder="What's your name?" ng-keydown="signup.validateKey($event)">
                 <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-if="SignUpForm.username.$dirty" aria-hidden="true"></span>
               </div>
               <!-- Email -->
               <div class="input-group has-feedback" ng-class="{'has-error': !signup.emailValid && SignUpForm.email.$dirty, 'has-success': signup.emailValid && SignUpForm.email.$dirty}">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
-                <input name="email" type="email" class="form-control" placeholder="Email" ng-model="signup.email" ng-change="signup.emailValidator()" novalidate>
-                 <span class="glyphicon glyphicon-remove form-control-feedback" ng-if="!signup.emailValid && signup.emailDirty" aria-hidden="true"></span>
+                <input name="email" type="email" class="form-control" placeholder="Email" ng-model="signup.user.email" ng-change="signup.emailValidator()" novalidate ng-keydown="signup.validateKey($event)">
+                <span class="glyphicon glyphicon-remove form-control-feedback" ng-if="!signup.emailValid && signup.emailDirty" aria-hidden="true"></span>
                 <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-if="signup.emailValid && signup.emailDirty" aria-hidden="true"></span>
               </div>
               <div class="" ng-show="signup.emailDirty">
@@ -42,7 +42,7 @@
               <!-- Password -->
               <div class="input-group has-feedback" ng-class="{'has-error': !signup.passwordValid && signup.passwordDirty, 'has-success': signup.passwordValid && signup.passwordDirty}">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></div>
-                <input name="password" type="password" class="form-control" ng-model="signup.password" ng-change="signup.passwordValidator()" placeholder="Enter password">
+                <input name="password" type="password" class="form-control" ng-model="signup.user.password" ng-change="signup.passwordValidator()" placeholder="Enter password" ng-keydown="signup.validateKey($event)">
                 <span class="glyphicon glyphicon-remove form-control-feedback" ng-if="!signup.passwordValid && signup.passwordDirty" aria-hidden="true"></span>
                 <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-if="signup.passwordValid && signup.passwordDirty" aria-hidden="true"></span>
               </div>
@@ -72,21 +72,21 @@
               <div class="form-group" style="text-align: left">
                 <div class="form-group">
                   <label><i class="glyphicon glyphicon-education"></i> Education</label>
-                  <select class="form-control">
+                  <select class="form-control" ng-model="signup.user.education">
                     <option ng-repeat="education in educations">{{education}}</option>
                   </select>
                 </div>
                 <div class="form-group">
                    <label><i class="fa fa-smile-o"></i> Interest topics</label>
-                  <input type="text" class="form-control" ng-model="interests" placeholder="What are your top interests?">
+                  <input type="text" class="form-control" ng-model="signup.user.interests" placeholder="What are your top interests?">
                 </div>
                 <div class="form-group">
                   <label><i class="glyphicon glyphicon-briefcase"></i> Occupation</label>
-                  <input type="text" class="form-control" ng-model="profession" placeholder="What do you do for a living?" bs-options="occupation for occupation in occupations" bs-typeahead data-min-length="0">
+                  <input type="text" class="form-control" ng-model="signup.user.profession" placeholder="What do you do for a living?" bs-options="occupation for occupation in occupations" bs-typeahead data-min-length="0">
                 </div>
                 <div class="form-group">
                   <label><i class="fa fa-globe"></i> Spoken languages</label>
-                  <input type="text" class="form-control" ng-model="selectedLanguages" bs-options="language.name for language in languages" placeholder="What languages are you fluent in?" bs-typeahead data-min-length="0">
+                  <input type="text" class="form-control" ng-model="signup.user.languages" bs-options="language.name for language in languages" placeholder="What languages are you fluent in?" bs-typeahead data-min-length="0">
                 </div>
               </div>
             </div>
