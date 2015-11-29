@@ -29,7 +29,9 @@ var users = ['$http', '$rootScope', function UsersFactory ($http, $rootScope) {
       }).success(function(data) {
         return data;
       });
-    }
+    },
+    loggedIn: false,
+    user: {}
   };
 }];
 

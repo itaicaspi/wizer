@@ -6,16 +6,15 @@
 
 <ul class="list-group">
   <li class="list-group-item no-background panel" ng-show="menu.loggedIn" style="text-align: center">
-    <img src="images\me.jpg" alt="" class="img-rounded" width="100px" max-width="200px">
+    <img ng-src="{{menu.user.pic}}"  alt="" class="img-rounded" width="100px" max-width="200px">
     <br>
-    <big>Itai Caspi</big>
-  </li>
-  <li class="list-group-item no-background panel" style="text-align: center">
-    <a href="" class="" data-animation="am-fade" data-template-url="views/sign-up.html" bs-modal="modal" data-container="body" ng-controller="SignUpModalCtrl as signup"></a>
-    <a href="" ng-click="showModal()"><b>Sign Up</b></a>
+    <big>{{menu.user.name}}</big>
   </li>
   <li class="list-group-item no-background panel" ng-hide="menu.loggedIn" style="text-align: center">
-    <a href="" ng-click="menu.loggedIn = true"><b>Log In</b></a>
+    <a href="" ng-click="showSignUpModal()"><b>Sign Up</b></a>
+  </li>
+  <li class="list-group-item no-background panel" ng-hide="menu.loggedIn" style="text-align: center">
+    <a href="" ng-click="showLogInModal()"><b>Log In</b></a>
   </li>
   <li class="list-group-item no-background panel" ng-repeat="item in menu.menuItems" ng-class="{'menu-active': menu.isCurrent($index)}">
     <!-- <a ng-href="{{item.url}}"> -->

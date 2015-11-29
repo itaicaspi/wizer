@@ -1,18 +1,34 @@
 'use strict';
 
-var SideMenuCtrl = function ($scope, $modal) {
+var SideMenuCtrl = function ($scope, $modal, users) {
   var self = this;
 
   var signupModal = $modal({controller: 'SignUpModalCtrl as signup', templateUrl: 'views/sign-up.html', show: false});
-  $scope.showModal = function() {
+  var loginModal = $modal({controller: 'LogInModalCtrl as login', templateUrl: 'views/log-in.html', show: false});
+  $scope.showSignUpModal = function() {
     signupModal.$promise.then(signupModal.show);
   };
-  $scope.hideModal = function() {
+  $scope.hideSignUpModal = function() {
     signupModal.$promise.then(signupModal.hide);
   };
-
-
+  $scope.showLogInModal = function() {
+    loginModal.$promise.then(loginModal.show);
+  };
+  $scope.hideLogInModal = function() {
+    loginModal.$promise.then(loginModal.hide);
+  };
   self.loggedIn = false;
+
+  self.user = {
+    name: '',
+    email: '',
+    pic: ''
+  };
+
+  $scope.$on('login', function() {
+    self.loggedIn = true;
+    self.user = users.user;
+  });
 
   self.active = -1;
   self.current = 0;

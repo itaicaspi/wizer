@@ -84,14 +84,6 @@ angular
       controllerAs: 'menu'
     };
   })
-  .directive('signUpForm', function () {
-    return {
-      restrict: 'E',
-      templateUrl: 'views/sign-up.html',
-      controller: 'SignUpCtrl',
-      controllerAs: 'signup'
-    };
-  })
   .directive('rightBar', function () {
     return {
       restrict: 'E',

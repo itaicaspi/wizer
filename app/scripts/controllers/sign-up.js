@@ -30,11 +30,11 @@ var SignUpModalCtrl = function($scope, $http, $modal, users){
   	if (self.step == 1 && self.passwordValid) {
   		var userInfo = users.getUserInfo(self.user.email);
   		userInfo.then(function(data) {
-        if (data.data.name == "") {
+        if (data.data) {
         	self.step = self.step + 1;
         } else {
         	self.emailValid = false;
-        	self.emailError = "The email seems to already be in use";
+        	self.emailError = "The email seems to already be in use" + data.data;
         }
       });
       //users.checkUserCredentials(self.user.email, self.user.password);
@@ -44,6 +44,7 @@ var SignUpModalCtrl = function($scope, $http, $modal, users){
   		self.user.pic = "images/profile3.jpg";
   		self.user.email = angular.lowercase(self.user.email);
   		users.addUser(self.user);
+  		$scope.hideSignUpModal();
   	} else {
   		self.alert = true;
   	}
