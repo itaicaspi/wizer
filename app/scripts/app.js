@@ -20,15 +20,10 @@ angular
     'ngSanitize',
     'ngTouch',
     'ngMessages',
-    'mgcrea.ngStrap'
+    'ui.bootstrap',
+    'mgcrea.ngStrap.modal'
   ])
-  .config(function ($routeProvider, $popoverProvider, $modalProvider) {
-    angular.extend($popoverProvider.defaults, {
-      html: true
-    });
-    angular.extend($modalProvider.defaults, {
-      html: true
-    });
+  .config(function ($routeProvider, $modalProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -92,12 +87,6 @@ angular
       controllerAs: 'right'
     };
   })
-  .controller('SortPopoverCtrl', function($scope) {
-    $scope.popover = {title: 'Sort by'};
-  })
-  .controller('TopicsPopoverCtrl', function($scope) {
-    $scope.popover = {title: 'Which topics interest you?'};
-  })
   .controller('DropCtrl', function ($scope) {
     $scope.dropzoneConfig = {
       'options': { // passed into the Dropzone constructor
@@ -133,43 +122,6 @@ angular
       });
     };
   })
-  .directive('password', function() {
-    return {
-      restrict: 'A',
-      require: 'ngModel',
-      link: function(scope, element, attr, ctrl) {
-        function customValidator(password) {
-            if (/[A-Z]/.test(password)) {
-                ctrl.$setValidity('uppercaseValidator', true);
-            } else {
-                ctrl.$setValidity('uppercaseValidator', false);
-            }
-
-            if (/[a-z]/.test(password)) {
-                ctrl.$setValidity('lowercaseValidator', true);
-            } else {
-                ctrl.$setValidity('lowercaseValidator', false);
-            }
-
-            if (/[0-9]/.test(password)) {
-                ctrl.$setValidity('numberValidator', true);
-            } else {
-                ctrl.$setValidity('numberValidator', false);
-            }
-
-            if (password.length >= 6) {
-                ctrl.$setValidity('sixCharactersValidator', true);
-            } else {
-                ctrl.$setValidity('sixCharactersValidator', false);
-            }
-
-            return password;
-        }
-
-        ctrl.$parsers.push(customValidator);
-      }
-    };
-  });
 })();
 
 

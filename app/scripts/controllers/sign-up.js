@@ -27,20 +27,21 @@ var SignUpModalCtrl = function($scope, $http, $modal, users){
 
   self.next = function(){
   	self.alert = false;
-  	if (self.step == 1 && self.passwordValid) {
+  	if (self.step == 1 && self.passwordValid && self.emailValid) {
+  		// Check with server if the email address already exists
   		var userInfo = users.getUserInfo(self.user.email);
   		userInfo.then(function(data) {
-        if (data.data) {
-        	self.step = self.step + 1;
-        } else {
+        if (Object.keys(data.data).length > 0) {
         	self.emailValid = false;
-        	self.emailError = "The email seems to already be in use" + data.data;
+        	self.emailError = "The email seems to already be in use";
+        } else {
+        	self.step = self.step + 1;
         }
       });
-      //users.checkUserCredentials(self.user.email, self.user.password);
   	} else if (self.step > 1 && self.step < 3) {
   		self.step = self.step + 1;
   	} else if (self.step == 3) {
+  		// For the last form page, sign up user
   		self.user.pic = "images/profile3.jpg";
   		self.user.email = angular.lowercase(self.user.email);
   		users.addUser(self.user);

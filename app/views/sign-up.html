@@ -26,7 +26,7 @@
               <!-- Name -->
               <div class="input-group" ng-class="{'has-success': SignUpForm.username.$dirty}">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-                <input name="username" type="text" class="form-control" ng-model="signup.user.name" placeholder="What's your name?" ng-keydown="signup.validateKey($event)">
+                <input autofocus name="username" type="text" class="form-control" ng-model="signup.user.name" placeholder="What's your name?" ng-keydown="signup.validateKey($event)">
                 <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-if="SignUpForm.username.$dirty" aria-hidden="true"></span>
               </div>
               <!-- Email -->
@@ -72,21 +72,21 @@
               <div class="form-group" style="text-align: left">
                 <div class="form-group">
                   <label><i class="glyphicon glyphicon-education"></i> Education</label>
-                  <select class="form-control" ng-model="signup.user.education">
+                  <select class="form-control" ng-model="signup.user.education" ng-keydown="signup.validateKey($event)">
                     <option ng-repeat="education in educations">{{education}}</option>
                   </select>
                 </div>
                 <div class="form-group">
                    <label><i class="fa fa-smile-o"></i> Interest topics</label>
-                  <input type="text" class="form-control" ng-model="signup.user.interests" placeholder="What are your top interests?">
+                  <input type="text" class="form-control" ng-model="signup.user.interests" placeholder="What are your top interests?" ng-keydown="signup.validateKey($event)">
                 </div>
                 <div class="form-group">
                   <label><i class="glyphicon glyphicon-briefcase"></i> Occupation</label>
-                  <input type="text" class="form-control" ng-model="signup.user.profession" placeholder="What do you do for a living?" bs-options="occupation for occupation in occupations" bs-typeahead data-min-length="0">
+                  <input type="text" class="form-control" ng-model="signup.user.profession" uib-typeahead="occupation for occupation in occupations | filter:$viewValue | limitTo:8" placeholder="What do you do for a living?" ng-keydown="signup.validateKey($event)">
                 </div>
                 <div class="form-group">
                   <label><i class="fa fa-globe"></i> Spoken languages</label>
-                  <input type="text" class="form-control" ng-model="signup.user.languages" bs-options="language.name for language in languages" placeholder="What languages are you fluent in?" bs-typeahead data-min-length="0">
+                  <input type="text" class="form-control" ng-model="signup.user.languages" uib-typeahead="language.name for language in languages | filter:$viewValue | limitTo:8" placeholder="What languages are you fluent in?" ng-keydown="signup.validateKey($event)">
                 </div>
               </div>
             </div>
@@ -122,11 +122,11 @@
             <div>
               <br>
               <label>
-                <input type="checkbox"> I agree to the terms of use
+                <input type="checkbox" required> I agree to the terms of use
               </label>
               <br>
               <label>
-                <input type="checkbox"> I have a bank account
+                <input type="checkbox" required> I have a bank account
               </label>
             </div>
           </div>

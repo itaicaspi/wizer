@@ -1,14 +1,24 @@
 <div class="row">
   <span class="col-md-4" style="color:#134E69">
     Related to 
-    <strong class="dotted" ng-controller="TopicsPopoverCtrl as popover" type="button" title="{{popover.title}}" data-content="{{popover.content}}" data-template-url="views/topics-popover.html" data-animation="am-flip-x" data-auto-close="1" data-placement="bottom" bs-popover>{{feed.topics}}</strong>
+    <script type="text/ng-template" id="topics-popover.html">
+      <input type="text" autofocus ng-model="feed.topics" class="form-control">
+    </script>
+    <strong class="dotted" type="button" popover-placement="bottom" uib-popover-template="'topics-popover.html'" popover-animation="true">{{feed.topics}}</strong>
   </span>
   <span class="col-md-4">
   </span>
   <span class="col-md-4" style="text-align:right">
     <span class="glyphicon glyphicon-menu-down"></span>
     Sorted by 
-    <strong class="dotted" ng-controller="SortPopoverCtrl as popover" type="button" title="{{popover.title}}" data-content="{{popover.content}}" data-template-url="views/sort-popover.html" data-animation="am-flip-x" data-auto-close="1" data-placement="bottom" bs-popover>{{feed.sort}}</strong>
+    <script type="text/ng-template" id="sort-popover.html">
+      <select class="form-control" ng-model="feed.sort" style="width: 130px">
+        <option>Interesting</option>
+        <option>Most Recent</option>
+        <option>Featured</option>
+      </select>
+    </script>
+    <strong class="dotted" type="button" popover-placement="bottom" uib-popover-template="'sort-popover.html'" popover-animation="true" popover-is-open="">{{feed.sort}}</strong>
   </span>
 </div>
 <br>

@@ -21,7 +21,7 @@ var LogInModalCtrl = function($rootScope, $scope, $http, $modal, users){
           $scope.hideLogInModal();
         });
       } else {
-        return false;
+        self.failedLogin = true;
       }
     });
   };
