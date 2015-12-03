@@ -1,6 +1,6 @@
 'use strict';
 
-var FeedCtrl = function(search, queries, comments, $http, $scope){
+var FeedCtrl = function(search, queries, comments, users, $http, $scope){
     var self = this;
 
     self.sort = 'Most Recent';
@@ -20,6 +20,22 @@ var FeedCtrl = function(search, queries, comments, $http, $scope){
     };
     $scope.$on('updateFeed', self.updateFeed);
 
+    // User access
+    self.loggedIn = false;
+    self.user = {
+      name: '',
+      email: '',
+      pic: ''
+    };
+    $scope.$on('login', function() {
+      self.loggedIn = true;
+      self.user = users.user;
+    });
+    $scope.$on('logout', function() {
+      self.loggedIn = false;
+      self.user = {};
+    });
+
     self.updateFeed();
     self.sortKey = function() {
       if (self.sort == 'Most Recent') {
@@ -30,19 +46,22 @@ var FeedCtrl = function(search, queries, comments, $http, $scope){
         return 'query_id';
       }
     };
+    self.addComment = function(queryId, comment) {
+      comments.addComment(users.user, queryId, comment);
+      angular.forEach(self.queries, function(query) {
+        if (query._id == queryId) {
+          query.comments.push({
+            text: comment,
+            date: new Date(),
+            ownerPic: users.user.pic
+          });
+        }
+      });
+      self.comment = '';
+    };
     self.validateKey = function(event, queryId, comment) {
       if (event.which === 13) { // enter
-        comments.addComment(queryId, comment);
-        angular.forEach(self.queries, function(query) {
-          if (query._id == queryId) {
-            query.comments.push({
-              text: comment,
-              date: new Date(),
-              ownerPic: 'images/me.jpg'
-            });
-          }
-        });
-        self.comment = '';
+        self.addComment(queryId, comment);
       }
     };
   };

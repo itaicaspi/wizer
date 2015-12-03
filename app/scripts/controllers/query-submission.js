@@ -10,7 +10,7 @@ angular.module('mainApp').run(function($http) {
 });
 
 
-var QuerySubmissionCtrl = function (queries, search, $scope, $timeout, $window) {
+var QuerySubmissionCtrl = function (users, queries, search, $scope, $timeout, $window) {
 	var self = this;
 
 	self.question = '';
@@ -38,7 +38,7 @@ var QuerySubmissionCtrl = function (queries, search, $scope, $timeout, $window) 
       	});
 	});
 	self.addQuery = function (question, description, tags) {
-		queries.addQuery(question, description, tags);
+		queries.addQuery(users.user, question, description, tags);
 		search.setPhrase('');
 		self.hide();
 	};

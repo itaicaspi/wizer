@@ -44,8 +44,8 @@
             <span>{{comment.date | date:'medium'}}</span>
           </p>
         </div>
-        <div>
-          <img ng-src="../images/me.jpg" alt="Profile picture" class="img-circle" width="25" height="25" style="top: 5px; position: relative;">
+        <div ng-if="feed.loggedIn">
+          <img ng-src="{{feed.user.pic}}" alt="Profile picture" class="img-circle" width="25" height="25" style="top: 5px; position: relative;">
           <p class="comment" style="padding: 5px">
             <input type="text" class="form-control" ng-model="feed.comment" placeholder="Add a comment..." size="100" ng-keydown="feed.validateKey($event,query._id, feed.comment)">
           </p>

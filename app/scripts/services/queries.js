@@ -13,14 +13,14 @@ var queries = ['$http', '$rootScope', function ($http, $rootScope) {
         return data;
       });
     },
-    addQuery: function(question, description, tags) {
+    addQuery: function(user, question, description, tags) {
       if (tags == "") tags = "General";
       console.log(tags);
       $http({
         method: 'POST',
         url: 'ask',
         data: {
-          ownerPic: 'images/profile3.jpg',
+          ownerPic: user.pic,
           category: tags,
           question: question,
           description: description,

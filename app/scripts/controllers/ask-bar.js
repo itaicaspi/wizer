@@ -1,7 +1,15 @@
 'use strict';
 
-var AskCtrl = function (search, queries, users) {
+var AskCtrl = function (search, queries, users, $modal, $scope) {
 	var self = this;
+
+	var loginModal = $modal({controller: 'LogInModalCtrl as login', templateUrl: 'views/log-in.html', show: false});
+  self.showLogInModal = function() {
+    loginModal.$promise.then(loginModal.show);
+  };
+  self.hideLogInModal = function() {
+    loginModal.$promise.then(loginModal.hide);
+  };
 
 	self.searchPhrase = '';
 	self.postQuery = function(phrase) {
@@ -9,7 +17,7 @@ var AskCtrl = function (search, queries, users) {
 			self.phrase = '';
 			queries.showQuerySubmission(phrase);
 		} else {
-			alert('not logged in');
+			self.showLogInModal();
 			// TODO: signup / login modal
 		}
 	};

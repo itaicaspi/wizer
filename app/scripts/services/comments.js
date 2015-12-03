@@ -11,7 +11,7 @@ var comments = ['$http', '$rootScope', function CommentsFactory ($http, $rootSco
         return data;
       });
     },
-    addComment: function(queryId, comment) {
+    addComment: function(user, queryId, comment) {
       $http({
         method: 'POST',
         url: 'comment',
@@ -19,7 +19,7 @@ var comments = ['$http', '$rootScope', function CommentsFactory ($http, $rootSco
           queryId: queryId,
           text: comment,
           date: new Date(),
-          ownerPic: "images/me.jpg"
+          ownerPic: user.pic
         }
       });
     }
