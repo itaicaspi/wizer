@@ -1,11 +1,22 @@
 'use strict';
 
+var model = {
+};
+
+angular.module('mainApp').run(function($http) {
+	$http.get('json/categories.json').success(function(response) {
+  	model.categories = angular.fromJson(response);
+	});
+});
+
+
 var QuerySubmissionCtrl = function (queries, search, $scope, $timeout, $window) {
 	var self = this;
 
 	self.question = '';
 	self.show = false;
 
+	$scope.categories = model.categories;
 	self.richText = false;
 	self.hide = function() {
 		self.show = false;

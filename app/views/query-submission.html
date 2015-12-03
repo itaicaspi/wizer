@@ -22,7 +22,7 @@
         <div class="col-md-10">
           <span class="form-group form-inline">
             <label for="qeury-tags" style="margin-right: 10px">Tags</label>
-            <input type="text" id="query-tags" class="form-control" placeholder="Choose tags" ng-model="query.tags" style="width: 300px" ng-keydown="query.validateKey($event, query.question, query.description, query.tags)">
+            <input type="text" id="query-tags" class="form-control" uib-typeahead="category.name for category in categories | filter:$viewValue | limitTo:1" placeholder="Choose tags" ng-model="query.tags" style="width: 300px" ng-keydown="query.validateKey($event, query.question, query.description, query.tags)">
           </span>
         </div>
         <div class="col-md-2 text-right">
