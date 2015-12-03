@@ -78,6 +78,7 @@ mongodb.MongoClient.connect(dbUri, function(error, db) {
 			if (docs.length > 0) {
 				userInfo.name = docs[0].name;
 				userInfo.pic = docs[0].pic;
+				userInfo.email = docs[0].email;
 			}
 			res.json(userInfo);
 		});
@@ -86,6 +87,34 @@ mongodb.MongoClient.connect(dbUri, function(error, db) {
 		db.collection('users').find(req.query).toArray(function(err, docs) {
 			var allowed = docs.length > 0;
 			res.json({allowed: allowed});
+		});
+	});
+
+	// Session
+	app.get('/testToken', function(req,res) {
+		db.collection('users').find(req.query).toArray(function(err, docs) {
+			var result = false;
+			if (docs.length > 0) {
+				result = true;
+			}
+			res.json(result);
+		});
+	});
+	app.get('/getToken', function(req,res) {
+		db.collection('users').find(req.query).toArray(function(err, docs) {
+
+			var rand = function() {
+			    return Math.random().toString(36).substr(2);
+			};
+			var token = function() {
+			    return rand() + rand();
+			};
+			var userToken = token(); 
+
+			if (docs.length > 0) {
+				db.collection('users').update(req.query, {$set:{"token": userToken}})
+			}
+			res.json(userToken);
 		});
 	});
 

@@ -39,6 +39,7 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+    $provide.decorator('$tooltipSuppressWarning', function () { return true; });
     $provide.decorator('taOptions', ['taRegisterTool', '$delegate', function(taRegisterTool, taOptions) { // $delegate is the taOptions we are decorating           
       taOptions.toolbar = [
         ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'pre', 'quote'],

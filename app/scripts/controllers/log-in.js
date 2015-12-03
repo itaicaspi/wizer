@@ -1,6 +1,6 @@
 'use strict';
 
-var LogInModalCtrl = function($rootScope, $scope, $http, $modal, users){
+var LogInModalCtrl = function($rootScope, $scope, $http, $modal, users, $cookies){
 	var self = this;
 
   self.user = {
@@ -14,10 +14,9 @@ var LogInModalCtrl = function($rootScope, $scope, $http, $modal, users){
       if (data.data.allowed) {
         var userInfo = users.getUserInfo(self.user.email);
         userInfo.then(function(data) {
-          self.user = data.data;
-          users.loggedIn = true;
-          users.user = self.user;
-          $rootScope.$broadcast('login');
+          self.user.pic = data.data.pic;
+          self.user.name = data.data.name;
+          users.logIn(self.user);
           $scope.hideLogInModal();
         });
       } else {
