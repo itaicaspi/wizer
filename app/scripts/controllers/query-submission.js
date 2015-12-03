@@ -6,6 +6,7 @@ var QuerySubmissionCtrl = function (queries, search, $scope, $timeout, $window) 
 	self.question = '';
 	self.show = false;
 
+	self.richText = false;
 	self.hide = function() {
 		self.show = false;
 		$timeout(function() {
@@ -25,17 +26,20 @@ var QuerySubmissionCtrl = function (queries, search, $scope, $timeout, $window) 
 	        }
       	});
 	});
-	self.addQuery = function (question, description) {
-		queries.addQuery(question, description);
+	self.addQuery = function (question, description, tags) {
+		queries.addQuery(question, description, tags);
 		search.setPhrase('');
 		self.hide();
 	};
-	self.validateKey = function(event, question, description) {
+	self.validateKey = function(event, question, description, tags) {
 		if (event.which === 13) { // enter
-			self.addQuery(question, description);
+			self.addQuery(question, description, tags);
 		} else if (event.which === 27) { // escape
 			self.hide();
 		}
+	};
+	self.toggleEditor = function() {
+		self.richText = !self.richText;
 	};
 };
 

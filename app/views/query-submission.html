@@ -8,13 +8,25 @@
         <input type="text" id="query-title" class="form-control" placeholder="Question" ng-model="query.question">
       </div>
       <div class="form-group">
-        <label for="query-description">Description</label>
-        <textarea rows="3" id="query-description" class="form-control" maxlength="1000" placeholder="Description" ng-model="query.description" autofocus ng-keydown="query.validateKey($event, query.question, query.description)"></textarea>
+        <div class="row">
+          <div class="col-md-8"><label for="query-description">Description</label></div>
+          <div class="col-md-4 text-right">
+            <a ng-hide="query.richText" ng-click="query.toggleEditor()">Switch to rich editor <i class="fa fa-caret-square-o-down"></i></a>
+            <a ng-show="query.richText" ng-click="query.toggleEditor()">Switch to simple editor <i class="fa fa-caret-square-o-up"></i></a>
+          </div>
+        </div>
+        <textarea rows="3" id="query-description" maxlength="1000" placeholder="Description" ng-model="query.description" autofocus ng-keydown="query.validateKey($event, query.question, query.description, query.tags)" ng-hide="query.richText" class="query-text-area"></textarea>
+        <text-angular ng-model="query.description" placeholder="Description" autofocus ng-show="query.richText"></text-angular>
       </div>
       <div class="row">
-        <div class="col-md-10"></div>
+        <div class="col-md-10">
+          <span class="form-group form-inline">
+            <label for="qeury-tags" style="margin-right: 10px">Tags</label>
+            <input type="text" id="query-tags" class="form-control" placeholder="Choose tags" ng-model="query.tags" style="width: 300px" ng-keydown="query.validateKey($event, query.question, query.description, query.tags)">
+          </span>
+        </div>
         <div class="col-md-2 text-right">
-          <input type="submit" class="btn btn-success" value="Submit" ng-click="query.addQuery(query.question, query.description)">
+          <input type="submit" class="btn btn-success" value="Submit" ng-click="query.addQuery(query.question, query.description, query.tags)" >
         </div>
       </div>
     </form>

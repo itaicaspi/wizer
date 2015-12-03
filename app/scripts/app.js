@@ -21,9 +21,10 @@ angular
     'ngTouch',
     'ngMessages',
     'ui.bootstrap',
-    'mgcrea.ngStrap.modal'
+    'mgcrea.ngStrap.modal',
+    'textAngular'
   ])
-  .config(function ($routeProvider, $modalProvider) {
+  .config(function ($routeProvider, $modalProvider, $provide) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -38,6 +39,15 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+    $provide.decorator('taOptions', ['taRegisterTool', '$delegate', function(taRegisterTool, taOptions) { // $delegate is the taOptions we are decorating           
+      taOptions.toolbar = [
+        ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'pre', 'quote'],
+        ['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo', 'clear'],
+        ['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent'],
+        ['insertImage','insertLink', 'insertVideo']
+      ];
+      return taOptions;
+    }]);
   })
   .directive('feed', function () {
     return {

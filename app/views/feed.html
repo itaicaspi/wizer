@@ -31,7 +31,7 @@
     </a>
     <div id="collapse{{$index}}" class="panel-collapse collapse">
       <div class="panel-body">
-        <p>{{query.description}}</p>
+        <p ng-bind-html="query.description"></p>
         <p class="text-right">{{query.date | date:'medium'}}</p>
         <br>
         <!-- Begin Comments -->
