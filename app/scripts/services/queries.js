@@ -8,7 +8,7 @@ var queries = ['$http', '$rootScope', function ($http, $rootScope) {
     getQueries: function() {
       return $http({
         method: 'GET',
-        url: 'feed'
+        url: 'api/feed'
       }).success(function(data) {
         return data;
       });
@@ -18,7 +18,7 @@ var queries = ['$http', '$rootScope', function ($http, $rootScope) {
       console.log(tags);
       $http({
         method: 'POST',
-        url: 'ask',
+        url: 'api/ask',
         data: {
           ownerPic: user.pic,
           category: tags,

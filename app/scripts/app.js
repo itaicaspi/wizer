@@ -101,36 +101,39 @@ angular
   .controller('DropCtrl', function ($scope) {
     $scope.dropzoneConfig = {
       'options': { // passed into the Dropzone constructor
-        'url': 'upload.php',
+        'url': '/api/picUpload',
         'previewsContainer': '#test',
         'thumbnailHeight': '260',
         'thumbnailWidth': '260',
-        'previewTemplate': document.querySelector('#preview').innerHTML
-      }/*,
+        'previewTemplate': document.querySelector('#preview').innerHTML,
+        'autoProcessQueue': false
+      },
       'eventHandlers': {
         'sending': function (file, xhr, formData) {
+          formData.append("test", file.size);
         },
         'success': function (file, response) {
         }
-      }*/
+      }
     };
   })
-  .directive('dropzone', function () {
+  .directive('dropzone', function ($rootScope) {
     return function (scope, element, attrs) {
       var config, dropzone;
 
       config = scope[attrs.dropzone];
 
-      dropzone = new Dropzone(element[0], config.options);
-      dropzone.on("addedfile", function(file) {
+      $rootScope.dropzone = new Dropzone(element[0], config.options);
+      $rootScope.dropzone.on("addedfile", function(file) {
         var l = element[0].childNodes.length;
         for (var i = 0; i < l - 1; i++) {
           element[0].removeChild(element[0].firstChild);
         }
       });
       angular.forEach(config.eventHandlers, function (handler, event) {
-        dropzone.on(event, handler);
+        $rootScope.dropzone.on(event, handler);
       });
+
     };
   })
 })();

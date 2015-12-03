@@ -5,7 +5,7 @@ var users = ['$http', '$rootScope', '$cookies', function UsersFactory ($http, $r
     getUserInfo: function(email) {
       return $http({
         method: 'GET',
-        url: 'users',
+        url: 'api/users',
         params: {email: angular.lowercase(email)}
       }).success(function(data) {
         return data;
@@ -14,14 +14,14 @@ var users = ['$http', '$rootScope', '$cookies', function UsersFactory ($http, $r
     addUser: function(user) {
       $http({
         method: 'POST',
-        url: 'signup',
+        url: 'api/signup',
         data: user
       });
     },
     checkUserCredentials: function(email, password) {
       return $http({
         method: 'GET',
-        url: 'signin',
+        url: 'api/signin',
         params: {
           email: angular.lowercase(email),
           password: password
@@ -35,7 +35,7 @@ var users = ['$http', '$rootScope', '$cookies', function UsersFactory ($http, $r
     generateToken: function(user) {
       return $http({
         method: 'GET',
-        url: 'getToken',
+        url: 'api/getToken',
         params: {email: user.email}
       }).success(function(data) {
         return data;
@@ -44,7 +44,7 @@ var users = ['$http', '$rootScope', '$cookies', function UsersFactory ($http, $r
     validateToken: function(email, token) {
       return $http({
         method: 'GET',
-        url: 'testToken',
+        url: 'api/testToken',
         params: {email: email, token: token}
       }).success(function(data) {
         return data;

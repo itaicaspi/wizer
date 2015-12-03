@@ -36,13 +36,18 @@ var SignUpModalCtrl = function($scope, $http, $modal, users){
         	self.emailError = "The email seems to already be in use";
         } else {
         	self.step = self.step + 1;
+        	// Upload profile picture to server
+					self.user.pic = 'uploads/profilePics/' + self.user.email + '.jpg';
+        	$scope.dropzone.on("sending", function(file, xhr, formData) {
+			      formData.append("user", self.user.email);
+			    });
+			  	$scope.dropzone.processQueue();
         }
       });
   	} else if (self.step > 1 && self.step < 3) {
   		self.step = self.step + 1;
   	} else if (self.step == 3) {
   		// For the last form page, sign up user
-  		self.user.pic = "images/profile3.jpg";
   		self.user.email = angular.lowercase(self.user.email);
   		users.addUser(self.user);
   		$scope.hideSignUpModal();

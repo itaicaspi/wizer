@@ -3,6 +3,8 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var mongodb = require('mongodb');
+var multer  = require('multer')
+var upload = multer({ dest: 'uploads/' })
 
 var serverPort = 8090;
 var dbPort = 27017;
@@ -36,21 +38,21 @@ mongodb.MongoClient.connect(dbUri, function(error, db) {
 		console.log(error);
 	}
 	// Queries
-	app.post('/ask',function(req,res){
+	app.post('/api/ask',function(req,res){
 		req.on('data', function(chunk) {
 			var query = JSON.parse(chunk);
 			db.collection('queries').insert(query);
 		});
 	  	res.end();
 	});
-	app.get('/feed', function(req,res) {
+	app.get('/api/feed', function(req,res) {
 		db.collection('queries').find().toArray(function(err, docs) {
 			res.json(docs);
 		});
 	});
 
 	// Comments
-	app.post('/comment',function(req,res){
+	app.post('/api/comment',function(req,res){
 		req.on('data', function(chunk) {
 			var comment = JSON.parse(chunk);
 			db.collection('comments_' + comment.queryId).insert(comment);
@@ -58,21 +60,21 @@ mongodb.MongoClient.connect(dbUri, function(error, db) {
 	  	res.end();
 	});
 
-	app.get('/getComments', function(req,res) {	
+	app.get('/api/getComments', function(req,res) {	
 		db.collection('comments_' + req.query.queryId).find(req.query).toArray(function(err, docs) {
 			res.json(docs);
 		});
 	});
 
 	// Users
-	app.post('/signup',function(req,res){
+	app.post('/api/signup',function(req,res){
 		req.on('data', function(chunk) {
 			var user = JSON.parse(chunk);
 			db.collection('users').insert(user);
 		});
 	  	res.end();
 	});
-	app.get('/users', function(req,res) {
+	app.get('/api/users', function(req,res) {
 		db.collection('users').find(req.query).toArray(function(err, docs) {
 			var userInfo = {};
 			if (docs.length > 0) {
@@ -83,7 +85,7 @@ mongodb.MongoClient.connect(dbUri, function(error, db) {
 			res.json(userInfo);
 		});
 	});
-	app.get('/signin', function(req,res) {	
+	app.get('/api/signin', function(req,res) {	
 		db.collection('users').find(req.query).toArray(function(err, docs) {
 			var allowed = docs.length > 0;
 			res.json({allowed: allowed});
@@ -91,7 +93,7 @@ mongodb.MongoClient.connect(dbUri, function(error, db) {
 	});
 
 	// Session
-	app.get('/testToken', function(req,res) {
+	app.get('/api/testToken', function(req,res) {
 		db.collection('users').find(req.query).toArray(function(err, docs) {
 			var result = false;
 			if (docs.length > 0) {
@@ -100,7 +102,7 @@ mongodb.MongoClient.connect(dbUri, function(error, db) {
 			res.json(result);
 		});
 	});
-	app.get('/getToken', function(req,res) {
+	app.get('/api/getToken', function(req,res) {
 		db.collection('users').find(req.query).toArray(function(err, docs) {
 
 			var rand = function() {
@@ -118,6 +120,17 @@ mongodb.MongoClient.connect(dbUri, function(error, db) {
 		});
 	});
 
+
+	app.post('/api/picUpload', upload.single('file'), function(req,res) {
+		fs.readFile(req.file.path, function (err, data) {
+			console.log('file uploaded');
+			var filename = req.body.user;
+			var newPath = __dirname + "/uploads/profilePics/" + filename + ".jpg";
+			fs.writeFile(newPath, data, function (err) {
+			  res.redirect("back");
+			});
+		});
+	});
 });
 
 

@@ -5,7 +5,7 @@ var comments = ['$http', '$rootScope', function CommentsFactory ($http, $rootSco
     getComments: function(queryId) {
       return $http({
         method: 'GET',
-        url: 'getComments',
+        url: 'api/getComments',
         params: {queryId: queryId}
       }).success(function(data) {
         return data;
@@ -14,7 +14,7 @@ var comments = ['$http', '$rootScope', function CommentsFactory ($http, $rootSco
     addComment: function(user, queryId, comment) {
       $http({
         method: 'POST',
-        url: 'comment',
+        url: 'api/comment',
         data: {
           queryId: queryId,
           text: comment,
