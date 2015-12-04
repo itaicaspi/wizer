@@ -3,12 +3,12 @@
 var AskCtrl = function (search, queries, users, $modal, $scope) {
 	var self = this;
 
-	var loginModal = $modal({controller: 'LogInModalCtrl as login', templateUrl: 'views/log-in.html', show: false});
-  self.showLogInModal = function() {
-    loginModal.$promise.then(loginModal.show);
+  var connectModal = $modal({controller: 'ConnectModalCtrl as login', templateUrl: 'views/connect.html', show: false});
+  self.showConnectModal = function() {
+    connectModal.$promise.then(connectModal.show);
   };
-  self.hideLogInModal = function() {
-    loginModal.$promise.then(loginModal.hide);
+  self.hideConnectModal = function() {
+    connectModal.$promise.then(connectModal.hide);
   };
 
 	self.searchPhrase = '';
@@ -17,8 +17,7 @@ var AskCtrl = function (search, queries, users, $modal, $scope) {
 			self.phrase = '';
 			queries.showQuerySubmission(phrase);
 		} else {
-			self.showLogInModal();
-			// TODO: signup / login modal
+			self.showConnectModal();
 		}
 	};
 	self.validateEnter = function(event, phrase) {

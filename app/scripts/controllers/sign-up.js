@@ -22,35 +22,44 @@ angular.module('mainApp').run(function($http) {
 
 var SignUpModalCtrl = function($scope, $http, $modal, users){
 	var self = this;
-	self.step = 1;
+	
 	self.profilePicHelper = "Choose your profile picture";
 
+	// Page managment
+	self.step = 1;
   self.next = function(){
   	self.alert = false;
-  	if (self.step == 1 && self.passwordValid && self.emailValid) {
-  		// Check with server if the email address already exists
-  		var userInfo = users.getUserInfo(self.user.email);
-  		userInfo.then(function(data) {
-        if (Object.keys(data.data).length > 0) {
-        	self.emailValid = false;
-        	self.emailError = "The email seems to already be in use";
-        } else {
-        	self.step = self.step + 1;
-        	// Upload profile picture to server
-					self.user.pic = 'uploads/profilePics/' + self.user.email + '.jpg';
-        	$scope.dropzone.on("sending", function(file, xhr, formData) {
-			      formData.append("user", self.user.email);
-			    });
-			  	$scope.dropzone.processQueue();
-        }
-      });
-  	} else if (self.step > 1 && self.step < 3) {
+  	if (self.step == 1) {
+  		// Account page
+  		if (self.passwordValid && self.emailValid) {
+	  		// Check with server if the email address already exists
+	  		var userInfo = users.getUserInfo(self.user.email);
+	  		userInfo.then(function(data) {
+	        if (Object.keys(data.data).length > 0) {
+	        	self.emailValid = false;
+	        	self.emailError = "The email seems to already be in use";
+	        } else {
+	        	self.step = self.step + 1;
+	        	// Upload profile picture to server
+						self.user.pic = 'uploads/profilePics/' + self.user.email + '.jpg';
+	        	$scope.dropzone.on("sending", function(file, xhr, formData) {
+				      formData.append("user", self.user.email);
+				    });
+				  	$scope.dropzone.processQueue();
+	        }
+	      });
+	  	}
+  	} else if (self.step == 2) {
+  		// Education page
   		self.step = self.step + 1;
   	} else if (self.step == 3) {
-  		// For the last form page, sign up user
-  		self.user.email = angular.lowercase(self.user.email);
-  		users.addUser(self.user);
-  		$scope.hideSignUpModal();
+  		// Terms page
+  		if (self.terms && self.bank) {
+	  		// For the last form page, sign up user
+	  		self.user.email = angular.lowercase(self.user.email);
+	  		users.addUser(self.user);
+	  		$scope.hideSignUpModal();
+	  	}
   	} else {
   		self.alert = true;
   	}

@@ -120,16 +120,17 @@ mongodb.MongoClient.connect(dbUri, function(error, db) {
 		});
 	});
 
-
+	// Upload profile pic
 	app.post('/api/picUpload', upload.single('file'), function(req,res) {
-		fs.readFile(req.file.path, function (err, data) {
-			console.log('file uploaded');
-			var filename = req.body.user;
-			var newPath = __dirname + "/uploads/profilePics/" + filename + ".jpg";
+		var filename = req.body.user;
+		var newPath = __dirname + "/uploads/profilePics/" + filename + ".jpg";
+		fs.rename(req.file.path, newPath);
+		/*fs.readFile(req.file.path, function (err, data) {
+
 			fs.writeFile(newPath, data, function (err) {
 			  res.redirect("back");
 			});
-		});
+		});*/
 	});
 });
 

@@ -105,8 +105,11 @@ angular
         'previewsContainer': '#test',
         'thumbnailHeight': '260',
         'thumbnailWidth': '260',
+        'maxFiles': '1',
+        'uploadMultiple': 'false',
         'previewTemplate': document.querySelector('#preview').innerHTML,
-        'autoProcessQueue': false
+        'autoProcessQueue': false,
+        'acceptedFiles': 'image/*'
       },
       'eventHandlers': {
         'sending': function (file, xhr, formData) {
