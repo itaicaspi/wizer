@@ -1,10 +1,16 @@
 'use strict';
 
-var FeedCtrl = function(search, queries, comments, users, $http, $scope){
+angular.module('mainApp').run(function($http) {
+  $http.get('json/cat.json').success(function(response) {
+    model.cat = angular.fromJson(response);
+  });
+});
+
+var FeedCtrl = function(search, queries, comments, users, $http, $scope, $filter){
     var self = this;
 
     self.sort = 'Most Recent';
-    self.topics = 'Science & Bussiness';
+    self.topics = ['Science & Bussiness'];
     self.isCommenting = false;
 
     self.extended = -1;
@@ -36,6 +42,13 @@ var FeedCtrl = function(search, queries, comments, users, $http, $scope){
       self.user = {};
     });
 
+
+    $scope.loadTags = function(query) {
+      return $filter('filter')(model.cat, query);
+    };
+    self.getTopics = function() {
+      return self.topics;
+    };
     self.updateFeed();
     self.sortKey = function() {
       if (self.sort == 'Most Recent') {

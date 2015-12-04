@@ -2,9 +2,14 @@
   <span class="col-md-4" style="color:#134E69">
     Related to 
     <script type="text/ng-template" id="topics-popover.html">
-      <input type="text" autofocus ng-model="feed.topics" class="form-control">
+      <tags-input autofocus ng-model="feed.topics" placeholder="Add a topic" style="width: 230px">
+        <auto-complete source="loadTags($query)" min-length="0" debounce-delay="0"></auto-complete>
+      </tags-input>
     </script>
-    <strong class="dotted" type="button" popover-placement="bottom" uib-popover-template="'topics-popover.html'" popover-animation="true">{{feed.topics}}</strong>
+    <strong class="dotted" type="button" popover-placement="bottom" uib-popover-template="'topics-popover.html'" popover-animation="true">
+      {{feed.topics}}
+      
+    </strong>
   </span>
   <span class="col-md-4">
   </span>
