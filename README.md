@@ -1,20 +1,28 @@
 # wizer
 wizer webapp WIP
 
-installation instructions:
-1. install nodejs latest version
-2. install mongodb latest version
-3. install python 2.7 under c:\python27
-4. add mongodb path to the PATH through the environment variables
-5. in a new command window, go to the repo dir and run:
+##installation instructions:
+<br>1. Install nodejs latest version
+<br>2. Install mongodb latest version
+<br>3. Install python 2.7 under c:\python27
+<br>4. Add mongodb path to the PATH through the environment variables
+<br>5. In a new command window, go to the repo dir and run:
+```shell
   mongod --dbpath data/db
-6. in a new command window, go to the repo dir and install dependencies:
+```
+<br>6. In a new command window, go to the repo dir and install dependencies:
+```shell
   npm install -g grunt
   npm install -g bower
   npm install --python=C:\Python27\python.exe
   bower install
-7. wire dependencies using:
+```
+<br>7. Wire dependencies using:
+```shell
   grunt wiredep
-8. descend to app dir and run the server:
+```
+<br>8. Descend to app dir and run the server:
+```shell
   node upload.js
-9. open http://localhost:8090 in the browser
+```
+<br>9. Open [`http://localhost:8090`](http://localhost:8090) in the browser
