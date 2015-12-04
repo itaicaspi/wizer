@@ -18,9 +18,12 @@ angular.module('mainApp').run(function($http) {
   $http.get('json/occupations.json').success(function(response) {
   	model.occupations = angular.fromJson(response);
 	});
+	$http.get('json/lang.json').success(function(response) {
+  	model.lang = angular.fromJson(response);
+	});
 });
 
-var SignUpModalCtrl = function($scope, $http, $modal, users){
+var SignUpModalCtrl = function($scope, $http, $modal, users, $filter){
 	var self = this;
 	
 	self.profilePicHelper = "Choose your profile picture";
@@ -29,26 +32,26 @@ var SignUpModalCtrl = function($scope, $http, $modal, users){
 	self.step = 1;
   self.next = function(){
   	self.alert = false;
-  	if (self.step == 1) {
+  	if (self.step == 1 && self.passwordValid && self.emailValid) {
   		// Account page
-  		if (self.passwordValid && self.emailValid) {
-	  		// Check with server if the email address already exists
-	  		var userInfo = users.getUserInfo(self.user.email);
-	  		userInfo.then(function(data) {
-	        if (Object.keys(data.data).length > 0) {
-	        	self.emailValid = false;
-	        	self.emailError = "The email seems to already be in use";
-	        } else {
-	        	self.step = self.step + 1;
-	        	// Upload profile picture to server
-						self.user.pic = 'uploads/profilePics/' + self.user.email + '.jpg';
-	        	$scope.dropzone.on("sending", function(file, xhr, formData) {
-				      formData.append("user", self.user.email);
-				    });
-				  	$scope.dropzone.processQueue();
-	        }
-	      });
-	  	}
+
+  		// Check with server if the email address already exists
+  		var userInfo = users.getUserInfo(self.user.email);
+  		userInfo.then(function(data) {
+        if (Object.keys(data.data).length > 0) {
+        	self.emailValid = false;
+        	self.emailError = "The email seems to already be in use";
+        } else {
+        	self.step = self.step + 1;
+        	// Upload profile picture to server
+					self.user.pic = 'uploads/profilePics/' + self.user.email + '.jpg';
+        	$scope.dropzone.on("sending", function(file, xhr, formData) {
+			      formData.append("user", self.user.email);
+			    });
+			  	$scope.dropzone.processQueue();
+        }
+      });
+
   	} else if (self.step == 2) {
   		// Education page
   		self.step = self.step + 1;
@@ -58,6 +61,7 @@ var SignUpModalCtrl = function($scope, $http, $modal, users){
 	  		// For the last form page, sign up user
 	  		self.user.email = angular.lowercase(self.user.email);
 	  		users.addUser(self.user);
+	  		users.logIn(self.user);
 	  		$scope.hideSignUpModal();
 	  	}
   	} else {
@@ -66,6 +70,20 @@ var SignUpModalCtrl = function($scope, $http, $modal, users){
   };
   self.prev = function() {
   	self.step = self.step - 1;
+  };
+
+ 	$scope.loadTags = function(query) {
+		return $filter('filter')(model.lang, query);
+  };
+
+  self.fileLoaded = false;
+  $scope.$on('fileLoaded', function() {
+    self.fileLoaded = true;
+  });
+  
+
+  self.openFileDialog = function() {
+  	$scope.dropzone.hiddenFileInput.click();
   };
 
   $scope.educations = model.educations;

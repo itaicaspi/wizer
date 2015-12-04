@@ -13,11 +13,13 @@ var AskCtrl = function (search, queries, users, $modal, $scope) {
 
 	self.searchPhrase = '';
 	self.postQuery = function(phrase) {
-		if (users.loggedIn) {
-			self.phrase = '';
-			queries.showQuerySubmission(phrase);
-		} else {
-			self.showConnectModal();
+		if (phrase) {
+			if (users.loggedIn) {
+				self.phrase = '';
+				queries.showQuerySubmission(phrase);
+			} else {
+				self.showConnectModal();
+			}
 		}
 	};
 	self.validateEnter = function(event, phrase) {
