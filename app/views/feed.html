@@ -7,8 +7,7 @@
       </tags-input>
     </script>
     <strong class="dotted" type="button" popover-placement="bottom" uib-popover-template="'topics-popover.html'" popover-animation="true">
-      {{feed.topics}}
-      
+      {{feed.getTopics()}}
     </strong>
   </span>
   <span class="col-md-4">
@@ -32,7 +31,7 @@
     <img ng-src="{{query.ownerPic}}" alt="Profile picture" class="img-circle" width="30" height="30" style="margin-right: 5px">
     <span class="badge alert-success">{{query.category}}</span>
     <a data-toggle="collapse" data-parent="#accordion" ng-href="#collapse{{$index}}">
-      <b>{{query.question}}</b>
+      <b>{{query.question | capitalize}}</b>
     </a>
     <div id="collapse{{$index}}" class="panel-collapse collapse">
       <div class="panel-body">

@@ -10,7 +10,7 @@ var FeedCtrl = function(search, queries, comments, users, $http, $scope, $filter
     var self = this;
 
     self.sort = 'Most Recent';
-    self.topics = ['Science & Bussiness'];
+    self.topics = [{text: 'General'}];
     self.isCommenting = false;
 
     self.extended = -1;
@@ -47,7 +47,11 @@ var FeedCtrl = function(search, queries, comments, users, $http, $scope, $filter
       return $filter('filter')(model.cat, query);
     };
     self.getTopics = function() {
-      return self.topics;
+      self.formattedTopics = '';
+      angular.forEach(self.topics, function(topic) {
+        self.formattedTopics += topic.text + ' ';
+      });
+      return self.formattedTopics;
     };
     self.updateFeed();
     self.sortKey = function() {
