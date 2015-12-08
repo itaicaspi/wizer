@@ -8,7 +8,8 @@
   <li class="list-group-item no-background panel" ng-show="menu.loggedIn" style="text-align: center" ng-mouseover="menu.logoutOption = true" ng-mouseleave="menu.logoutOption = false">
     <img ng-src="{{menu.user.pic}}"  alt="" class="img-rounded" width="100px" max-width="200px">
     <br>
-    <big>{{menu.user.name}}</big>
+    <big>{{menu.user.name  | capitalize:'all'}}</big>
+    <small>Balance: {{menu.user.balance | currency:"$"}}</small>
     <div ng-if="menu.logoutOption" class="fade-animation" style="text-align:center">
       <a href="" ng-click="menu.logOut()"><b>Log Out</b></a>
     </div>

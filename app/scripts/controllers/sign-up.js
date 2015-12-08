@@ -28,6 +28,20 @@ var SignUpModalCtrl = function($scope, $http, $modal, users, $filter){
 	
 	self.profilePicHelper = "Choose your profile picture";
 
+	self.user = {
+		name: '',
+		email: '',
+		password: '',
+		pic: '',
+		balance: 0.0,
+		education: '',
+		interests: '',
+		profession: '',
+		rating: 0, // between 0 and 10
+		answers: 0,
+		quetions: 0
+	};
+
 	// Page managment
 	self.step = 1;
   self.next = function(){

@@ -42,6 +42,7 @@ mongodb.MongoClient.connect(dbUri, function(error, db) {
 		req.on('data', function(chunk) {
 			var query = JSON.parse(chunk);
 			db.collection('queries').insert(query);
+			db.collection('users').update({"email":query.owner}, {$inc:{"questions": 1}})
 		});
 	  	res.end();
 	});
@@ -78,10 +79,11 @@ mongodb.MongoClient.connect(dbUri, function(error, db) {
 		db.collection('users').find(req.query).toArray(function(err, docs) {
 			var userInfo = {};
 			if (docs.length > 0) {
-				userInfo.name = docs[0].name;
-				userInfo.pic = docs[0].pic;
-				userInfo.email = docs[0].email;
-				userInfo.profession = docs[0].profession;
+				userInfo = docs[0];
+				// hide private info
+				userInfo.password = '';
+				userInfo.token = '';
+				//userInfo.balance = '';
 			}
 			res.json(userInfo);
 		});

@@ -15,7 +15,7 @@ var queries = ['$http', '$rootScope', function ($http, $rootScope) {
     },
     addQuery: function(user, question, description, tags) {
       if (tags == "") tags = "General";
-      console.log(tags);
+      
       $http({
         method: 'POST',
         url: 'api/ask',
