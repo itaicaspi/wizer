@@ -28,7 +28,21 @@
 <br>
 <ul class="list-group" id="accordion" >
   <li class="list-group-item panel" ng-repeat="query in feed.queries | filter:search.phrase | orderBy:feed.sortKey()">
-    <img ng-src="{{query.ownerPic}}" alt="Profile picture" class="img-circle" width="30" height="30" style="margin-right: 5px">
+    <script type="text/ng-template" id="profile-popover.html">
+      <div class="row">
+        <div class="col-sm-4">
+          <img ng-src="{{query.ownerPic}}" alt="Profile picture" class="img-circle" width="50" height="50" style="margin-right: 5px">
+        </div>
+        <div class="col-sm-8">
+          <p>
+            <b>{{query.owner.name}}</b>
+            <br>
+            {{query.owner.profession}}
+          </p>
+        </div>
+      </div>
+    </script>
+    <img ng-src="{{query.ownerPic}}" alt="Profile picture" class="img-circle" width="30" height="30" style="margin-right: 5px" popover-placement="bottom" uib-popover-template="'profile-popover.html'" popover-animation="true" popover-trigger="mouseenter">
     <span class="badge alert-success">{{query.category}}</span>
     <a data-toggle="collapse" data-parent="#accordion" ng-href="#collapse{{$index}}">
       <b>{{query.question | capitalize}}</b>

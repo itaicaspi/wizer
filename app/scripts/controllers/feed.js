@@ -21,6 +21,9 @@ var FeedCtrl = function(search, queries, comments, users, $http, $scope, $filter
           comments.getComments(query._id).then(function(data) {
             query.comments = data.data;
           });
+          users.getUserInfo(query.owner).then(function(data) {
+            query.owner = data.data;
+          });
         });
       });
     };
@@ -42,14 +45,18 @@ var FeedCtrl = function(search, queries, comments, users, $http, $scope, $filter
       self.user = {};
     });
 
-
     $scope.loadTags = function(query) {
       return $filter('filter')(model.cat, query);
     };
     self.getTopics = function() {
       self.formattedTopics = '';
-      angular.forEach(self.topics, function(topic) {
-        self.formattedTopics += topic.text + ' ';
+      angular.forEach(self.topics, function(topic, idx) {
+        self.formattedTopics += topic.text;
+        if (idx < self.topics.length - 2) {
+          self.formattedTopics += ', ';
+        } else if (idx == self.topics.length - 2 && self.topics.length > 1) {
+          self.formattedTopics += ' & ';
+        }        
       });
       return self.formattedTopics;
     };

@@ -20,6 +20,7 @@ var queries = ['$http', '$rootScope', function ($http, $rootScope) {
         method: 'POST',
         url: 'api/ask',
         data: {
+          owner: user.email,
           ownerPic: user.pic,
           category: tags,
           question: question,

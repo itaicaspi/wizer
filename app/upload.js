@@ -81,6 +81,7 @@ mongodb.MongoClient.connect(dbUri, function(error, db) {
 				userInfo.name = docs[0].name;
 				userInfo.pic = docs[0].pic;
 				userInfo.email = docs[0].email;
+				userInfo.profession = docs[0].profession;
 			}
 			res.json(userInfo);
 		});
